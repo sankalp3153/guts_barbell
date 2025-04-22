@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ exercise.name }} - Blood and Guts{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <article class="exercise-details">
+                <header class="mb-4">
+                    <h1 class="display-4 text-danger">{{ exercise.name }}</h1>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <span class="badge bg-danger p-2">{{ exercise.get_difficulty_display }}</span>
+                        <span class="badge bg-secondary p-2">{{ exercise.get_muscle_group_display }}</span>
+                    </div>
+                </header>
+
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        {% if exercise.image %}
+                            <img src="{{ exercise.image.url }}" alt="{{ exercise.name }}" class="img-fluid rounded mb-4">
+                        {% else %}
+                            <div class="bg-secondary text-white text-center py-5 rounded mb-4">
+                                <i class="fas fa-dumbbell fa-5x"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if exercise.video_url %}
+                            <div class="ratio ratio-16x9 mb-4">
+                                <iframe src="{{ exercise.video_url }}" title="{{ exercise.name }}" allowfullscreen></iframe>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="exercise-description mb-5">
+                    <h3 class="text-danger mb-3">Description</h3>
+                    {{ exercise.description|safe|linebreaks }}
+                </div>
+
+                <div class="exercise-instructions mb-5">
+                    <h3 class="text-danger mb-3">Instructions</h3>
+                    <div class="card bg-dark border-secondary">
+                        <div class="card-body">
+                            {{ exercise.instructions|safe|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Exercise Info -->
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Exercise Details</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Muscle Group:</span>
+                            <span class="badge bg-secondary">{{ exercise.get_muscle_group_display }}</span>
+                        </li>
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Difficulty:</span>
+                            <span class="badge bg-danger">{{ exercise.get_difficulty_display }}</span>
+                        </li>
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Added By:</span>
+                            <span class="text-muted">{{ exercise.created_by.username }}</span>
+                        </li>
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Added On:</span>
+                            <span class="text-muted">{{ exercise.created_at|date:"M d, Y" }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Related Exercises -->
+            <div class="card bg-dark border-danger">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Similar Exercises</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        {% for related_exercise in related_exercises %}
+                            <li class="list-group-item bg-dark border-secondary">
+                                <a href="{{ related_exercise.get_absolute_url }}" class="text-light text-decoration-none">
+                                    <div class="d-flex align-items-center">
+                                        {% if related_exercise.image %}
+                                            <img src="{{ related_exercise.image.url }}" alt="{{ related_exercise.name }}" class="me-2 rounded" width="50" height="50" style="object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-secondary text-white d-inline-flex justify-content-center align-items-center me-2 rounded" style="width: 50px; height: 50px;">
+                                                <i class="fas fa-dumbbell"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-0">{{ related_exercise.name }}</h6>
+                                            <small class="text-muted">{{ related_exercise.get_difficulty_display }}</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item bg-dark border-secondary text-muted">No similar exercises found</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

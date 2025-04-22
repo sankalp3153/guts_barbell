@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ diet.title }} - Blood and Guts{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <article class="diet-details">
+                <header class="mb-4">
+                    <h1 class="display-4 text-danger">{{ diet.title }}</h1>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <span class="badge bg-danger p-2">{{ diet.get_goal_display }}</span>
+                        <span class="badge bg-secondary p-2">{{ diet.duration_weeks }} Weeks</span>
+                        <span class="badge bg-dark border border-secondary p-2">
+                            <i class="fas fa-user me-1"></i> {{ diet.author.username }}
+                        </span>
+                        <span class="badge bg-dark border border-secondary p-2">
+                            <i class="fas fa-calendar me-1"></i> {{ diet.created_at|date:"M d, Y" }}
+                        </span>
+                    </div>
+                    
+                    {% if diet.featured_image %}
+                        <img src="{{ diet.featured_image.url }}" alt="{{ diet.title }}" class="img-fluid rounded mb-4">
+                    {% endif %}
+                </header>
+
+                <div class="diet-description mb-5">
+                    <h3 class="text-danger mb-3">Plan Overview</h3>
+                    {{ diet.description|safe|linebreaks }}
+                </div>
+
+                {% if diet.calories_per_day or diet.protein_grams or diet.carbs_grams or diet.fat_grams %}
+                    <div class="nutrition-overview mb-5">
+                        <h3 class="text-danger mb-3">Daily Nutrition Targets</h3>
+                        <div class="card bg-dark border-secondary">
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    {% if diet.calories_per_day %}
+                                        <div class="col-md-3 mb-3 mb-md-0">
+                                            <div class="p-3 bg-black rounded">
+                                                <i class="fas fa-fire text-danger fa-2x mb-2"></i>
+                                                <h4>{{ diet.calories_per_day }}</h4>
+                                                <p class="mb-0">Calories</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if diet.protein_grams %}
+                                        <div class="col-md-3 mb-3 mb-md-0">
+                                            <div class="p-3 bg-black rounded">
+                                                <i class="fas fa-drumstick-bite text-danger fa-2x mb-2"></i>
+                                                <h4>{{ diet.protein_grams }}g</h4>
+                                                <p class="mb-0">Protein</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if diet.carbs_grams %}
+                                        <div class="col-md-3 mb-3 mb-md-0">
+                                            <div class="p-3 bg-black rounded">
+                                                <i class="fas fa-bread-slice text-danger fa-2x mb-2"></i>
+                                                <h4>{{ diet.carbs_grams }}g</h4>
+                                                <p class="mb-0">Carbs</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if diet.fat_grams %}
+                                        <div class="col-md-3 mb-3 mb-md-0">
+                                            <div class="p-3 bg-black rounded">
+                                                <i class="fas fa-cheese text-danger fa-2x mb-2"></i>
+                                                <h4>{{ diet.fat_grams }}g</h4>
+                                                <p class="mb-0">Fat</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="meal-plans mb-5">
+                    <h3 class="text-danger mb-4">Meal Plan</h3>
+                    
+                    {% if meals %}
+                        <div class="accordion" id="mealAccordion">
+                            {% for meal in meals %}
+                                <div class="accordion-item bg-dark border-secondary mb-3">
+                                    <h2 class="accordion-header" id="heading{{ meal.id }}">
+                                        <button class="accordion-button bg-black text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ meal.id }}" aria-expanded="false" aria-controls="collapse{{ meal.id }}">
+                                            <div class="d-flex justify-content-between align-items-center w-100 me-3">
+                                                <strong>{{ meal.name }} ({{ meal.get_meal_type_display }})</strong>
+                                                {% if meal.calories %}
+                                                    <span class="badge bg-danger">{{ meal.calories }} cal</span>
+                                                {% endif %}
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ meal.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ meal.id }}" data-bs-parent="#mealAccordion">
+                                        <div class="accordion-body">
+                                            {% if meal.description %}
+                                                <p>{{ meal.description }}</p>
+                                                <hr class="border-secondary">
+                                            {% endif %}
+                                            
+                                            {% if meal.calories or meal.protein_grams or meal.carbs_grams or meal.fat_grams %}
+                                                <div class="nutrition-info mb-3">
+                                                    <h6 class="text-danger">Nutrition Information:</h6>
+                                                    <div class="d-flex flex-wrap gap-2">
+                                                        {% if meal.calories %}
+                                                            <span class="nutrition-info">
+                                                                <i class="fas fa-fire me-1"></i> {{ meal.calories }} cal
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if meal.protein_grams %}
+                                                            <span class="nutrition-info">
+                                                                <i class="fas fa-drumstick-bite me-1"></i> {{ meal.protein_grams }}g protein
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if meal.carbs_grams %}
+                                                            <span class="nutrition-info">
+                                                                <i class="fas fa-bread-slice me-1"></i> {{ meal.carbs_grams }}g carbs
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if meal.fat_grams %}
+                                                            <span class="nutrition-info">
+                                                                <i class="fas fa-cheese me-1"></i> {{ meal.fat_grams }}g fat
+                                                            </span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            
+                                            {% if meal.recipes.all %}
+                                                <h6 class="text-danger">Recipes:</h6>
+                                                {% for recipe in meal.recipes.all %}
+                                                    <div class="card bg-black border-secondary mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="mb-0">{{ recipe.title }}</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row mb-3">
+                                                                <div class="col-md-4">
+                                                                    {% if recipe.image %}
+                                                                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid rounded">
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                        {% if recipe.prep_time %}
+                                                                            <span class="badge bg-secondary">
+                                                                                <i class="fas fa-clock me-1"></i> Prep: {{ recipe.prep_time }} min
+                                                                            </span>
+                                                                        {% endif %}
+                                                                        {% if recipe.cook_time %}
+                                                                            <span class="badge bg-secondary">
+                                                                                <i class="fas fa-fire me-1"></i> Cook: {{ recipe.cook_time }} min
+                                                                            </span>
+                                                                        {% endif %}
+                                                                        {% if recipe.servings %}
+                                                                            <span class="badge bg-secondary">
+                                                                                <i class="fas fa-utensils me-1"></i> Serves: {{ recipe.servings }}
+                                                                            </span>
+                                                                        {% endif %}
+                                                                        {% if recipe.calories_per_serving %}
+                                                                            <span class="badge bg-danger">
+                                                                                {{ recipe.calories_per_serving }} cal/serving
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <h6 class="text-danger">Ingredients:</h6>
+                                                                    {{ recipe.ingredients|safe|linebreaks }}
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <h6 class="text-danger">Instructions:</h6>
+                                                                    {{ recipe.instructions|safe|linebreaks }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-muted">No specific recipes provided for this meal.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-secondary" role="alert">
+                            No meal details have been added to this diet plan yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </article>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Author Info -->
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Plan Creator</h5>
+                </div>
+                <div class="card-body text-center">
+                    {% if diet.author.profile_image %}
+                        <img src="{{ diet.author.profile_image.url }}" alt="{{ diet.author.username }}" class="rounded-circle mb-3" width="100" height="100">
+                    {% else %}
+                        <div class="bg-secondary text-white rounded-circle d-inline-flex justify-content-center align-items-center mb-3" style="width: 100px; height: 100px;">
+                            <i class="fas fa-user fa-3x"></i>
+                        </div>
+                    {% endif %}
+                    <h5>{{ diet.author.get_full_name|default:diet.author.username }}</h5>
+                    {% if diet.author.bio %}
+                        <p class="small">{{ diet.author.bio|truncatewords:30 }}</p>
+                    {% else %}
+                        <p class="small text-muted">No bio available.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Diet Stats -->
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Plan Stats</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Goal:</span>
+                            <span class="badge bg-danger">{{ diet.get_goal_display }}</span>
+                        </li>
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Duration:</span>
+                            <span class="badge bg-secondary">{{ diet.duration_weeks }} Weeks</span>
+                        </li>
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Meals:</span>
+                            <span class="badge bg-secondary">{{ meals.count }}</span>
+                        </li>
+                        <li class="list-group-item bg-dark border-secondary d-flex justify-content-between align-items-center">
+                            <span>Created:</span>
+                            <span class="text-muted">{{ diet.created_at|date:"M d, Y" }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Related Diets -->
+            <div class="card bg-dark border-danger">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Similar Diet Plans</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        {% for related_diet in related_diets %}
+                            <li class="list-group-item bg-dark border-secondary">
+                                <a href="{{ related_diet.get_absolute_url }}" class="text-light text-decoration-none">
+                                    <div class="d-flex align-items-center">
+                                        {% if related_diet.featured_image %}
+                                            <img src="{{ related_diet.featured_image.url }}" alt="{{ related_diet.title }}" class="me-2 rounded" width="50" height="50" style="object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-secondary text-white d-inline-flex justify-content-center align-items-center me-2 rounded" style="width: 50px; height: 50px;">
+                                                <i class="fas fa-utensils"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-0">{{ related_diet.title }}</h6>
+                                            <small class="text-muted">{{ related_diet.duration_weeks }} Weeks | {{ related_diet.get_goal_display }}</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item bg-dark border-secondary text-muted">No similar diet plans found</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

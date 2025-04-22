@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - Blood and Guts{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto text-center">
+            <h1 class="display-4 text-danger mb-4">Contact Us</h1>
+            <p class="lead">Have questions or feedback? We'd love to hear from you.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="card bg-dark border-danger h-100">
+                <div class="card-header bg-black text-danger">
+                    <h3 class="mb-0">Get In Touch</h3>
+                </div>
+                <div class="card-body">
+                    <form id="contactForm" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control bg-dark text-light" id="name" required>
+                            <div class="invalid-feedback">
+                                Please enter your name.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control bg-dark text-light" id="email" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <select class="form-select bg-dark text-light" id="subject" required>
+                                <option value="" selected disabled>Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="partnership">Partnership Opportunity</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a subject.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control bg-dark text-light" id="message" rows="5" required></textarea>
+                            <div class="invalid-feedback">
+                                Please enter your message.
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-danger">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card bg-dark border-danger h-100">
+                <div class="card-header bg-black text-danger">
+                    <h3 class="mb-0">Contact Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5 class="text-danger mb-3">Our Location</h5>
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Warrior Street, Midland City, MC 12345</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="text-danger mb-3">Email Us</h5>
+                        <p><i class="fas fa-envelope me-2"></i> info@bloodandguts.com</p>
+                        <p><i class="fas fa-envelope me-2"></i> support@bloodandguts.com</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="text-danger mb-3">Call Us</h5>
+                        <p><i class="fas fa-phone me-2"></i> (123) 456-7890</p>
+                        <p><i class="fas fa-phone me-2"></i> (123) 456-7891</p>
+                    </div>
+                    <div>
+                        <h5 class="text-danger mb-3">Follow Us</h5>
+                        <div class="social-icons">
+                            <a href="#" class="text-light me-3"><i class="fab fa-facebook-f fa-2x"></i></a>
+                            <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-2x"></i></a>
+                            <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-2x"></i></a>
+                            <a href="#" class="text-light me-3"><i class="fab fa-youtube fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-dark border-danger">
+                <div class="card-header bg-black text-danger">
+                    <h3 class="mb-0">Frequently Asked Questions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button bg-black text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    How do I choose the right workout program?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Selecting the right workout program depends on your current fitness level, goals, and available time. We recommend starting with a program that matches your experience level (beginner, intermediate, or advanced). If you're unsure, you can contact us for personalized recommendations.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button bg-black text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Can I modify the diet plans to fit my dietary restrictions?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, our diet plans can be modified to accommodate various dietary restrictions and preferences. Each meal typically includes alternative options or suggestions for substitutions. If you need specific guidance, feel free to reach out to our nutrition team.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button bg-black text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    How often are new workout programs and articles added?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We regularly update our content library with new workout programs, diet plans, and informative articles. Typically, we add new blog posts weekly and new workout programs monthly. Stay updated by following our social media channels or subscribing to our newsletter.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button bg-black text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    Do I need a gym membership to follow your workout programs?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    While many of our programs are designed for gym settings, we also offer home workout options that require minimal equipment. Each program clearly indicates the required equipment so you can choose one that fits your available resources.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+        
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                event.preventDefault();
+                // Simulate form submission
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+                
+                setTimeout(function() {
+                    form.reset();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Show success message
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show mt-3';
+                    alertDiv.innerHTML = `
+                        Message sent successfully! We'll get back to you soon.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    form.parentNode.insertBefore(alertDiv, form.nextSibling);
+                    
+                    // Auto-dismiss after 5 seconds
+                    setTimeout(function() {
+                        const bsAlert = new bootstrap.Alert(alertDiv);
+                        bsAlert.close();
+                    }, 5000);
+                }, 1500);
+            }
+            
+            form.classList.add('was-validated');
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

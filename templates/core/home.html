@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Blood and Guts - Berserk-Themed Fitness{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center py-5 bg-black">
+    <div class="container">
+        <h1 class="display-3 fw-bold text-danger mb-4">BLOOD & GUTS</h1>
+        <p class="lead mb-5">Forge your body with the strength and determination of a Berserk warrior.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'workouts:program_list' %}" class="btn btn-danger btn-lg">Workout Programs</a>
+            <a href="{% url 'blogs:blog_list' %}" class="btn btn-outline-light btn-lg">Read Our Blog</a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Sections -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-book text-danger fa-3x mb-3"></i>
+                        <h3 class="card-title">Informative Blogs</h3>
+                        <p class="card-text">Discover the latest fitness knowledge, tips, and strategies to maximize your gains.</p>
+                        <a href="{% url 'blogs:blog_list' %}" class="btn btn-outline-danger mt-3">Read Blogs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-dumbbell text-danger fa-3x mb-3"></i>
+                        <h3 class="card-title">Workout Programs</h3>
+                        <p class="card-text">Follow our brutal, effective workout routines designed to build strength and power.</p>
+                        <a href="{% url 'workouts:program_list' %}" class="btn btn-outline-danger mt-3">View Programs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-utensils text-danger fa-3x mb-3"></i>
+                        <h3 class="card-title">Diet Plans</h3>
+                        <p class="card-text">Fuel your body with our nutrition plans designed to support your fitness goals.</p>
+                        <a href="{% url 'diets:diet_list' %}" class="btn btn-outline-danger mt-3">Explore Diets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Blogs -->
+<section class="py-5 bg-black">
+    <div class="container">
+        <h2 class="text-center text-danger mb-5">Latest Articles</h2>
+        <div class="row">
+            {% for blog in latest_blogs %}
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-dark h-100">
+                        {% if blog.featured_image %}
+                            <img src="{{ blog.featured_image.url }}" class="card-img-top" alt="{{ blog.title }}">
+                        {% else %}
+                            <div class="bg-secondary text-white text-center py-5">
+                                <i class="fas fa-image fa-3x"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ blog.title }}</h5>
+                            <p class="card-text text-muted">{{ blog.excerpt|truncatewords:20 }}</p>
+                        </div>
+                        <div class="card-footer bg-dark border-0">
+                            <a href="{{ blog.get_absolute_url }}" class="btn btn-sm btn-outline-danger">Read More</a>
+                            <small class="text-muted float-end">{{ blog.created_at|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p>No blog posts available yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'blogs:blog_list' %}" class="btn btn-danger">View All Articles</a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Workouts -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center text-danger mb-5">Featured Workout Programs</h2>
+        <div class="row">
+            {% for program in featured_workouts %}
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-dark h-100">
+                        {% if program.featured_image %}
+                            <img src="{{ program.featured_image.url }}" class="card-img-top" alt="{{ program.title }}">
+                        {% else %}
+                            <div class="bg-secondary text-white text-center py-5">
+                                <i class="fas fa-dumbbell fa-3x"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ program.title }}</h5>
+                            <p class="card-text text-muted">{{ program.description|truncatewords:20 }}</p>
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-danger">{{ program.get_difficulty_display }}</span>
+                                <span class="badge bg-secondary">{{ program.duration_weeks }} Weeks</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-dark border-0">
+                            <a href="{{ program.get_absolute_url }}" class="btn btn-sm btn-outline-danger">View Program</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p>No workout programs available yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'workouts:program_list' %}" class="btn btn-danger">View All Programs</a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-danger text-white text-center">
+    <div class="container">
+        <h2 class="mb-4">Ready to Transform Your Body?</h2>
+        <p class="lead mb-4">Join Blood & Guts today and start your journey to becoming stronger.</p>
+        <a href="{% url 'users:register' %}" class="btn btn-outline-light btn-lg">Sign Up Now</a>
+    </div>
+</section>
+{% endblock %}

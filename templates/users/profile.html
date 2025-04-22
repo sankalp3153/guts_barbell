@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - Blood and Guts{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark border-danger">
+                <div class="card-header bg-black text-danger">
+                    <h3 class="mb-0">{{ user.username }}</h3>
+                </div>
+                <div class="card-body text-center">
+                    {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                    {% else %}
+                        <div class="bg-secondary text-white rounded-circle d-inline-flex justify-content-center align-items-center mb-3" style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-5x"></i>
+                        </div>
+                    {% endif %}
+                    <h4 class="card-title">{{ user.get_full_name }}</h4>
+                    <p class="card-text text-muted">@{{ user.username }}</p>
+                    <p class="card-text">{{ user.email }}</p>
+                    <a href="{% url 'users:edit_profile' %}" class="btn btn-danger">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header bg-black text-danger">
+                    <h3 class="mb-0">About Me</h3>
+                </div>
+                <div class="card-body">
+                    {% if user.bio %}
+                        <p>{{ user.bio }}</p>
+                    {% else %}
+                        <p class="text-muted">No bio information available.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if user.is_trainer %}
+                <div class="card bg-dark border-danger mb-4">
+                    <div class="card-header bg-black text-danger">
+                        <h3 class="mb-0">My Content</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-3">
+                                <div class="p-3 bg-black rounded">
+                                    <i class="fas fa-book text-danger fa-3x mb-2"></i>
+                                    <h4>{{ user.blog_posts.count }}</h4>
+                                    <p>Blog Posts</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center mb-3">
+                                <div class="p-3 bg-black rounded">
+                                    <i class="fas fa-dumbbell text-danger fa-3x mb-2"></i>
+                                    <h4>{{ user.workout_programs.count }}</h4>
+                                    <p>Workout Programs</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center mb-3">
+                                <div class="p-3 bg-black rounded">
+                                    <i class="fas fa-utensils text-danger fa-3x mb-2"></i>
+                                    <h4>{{ user.diet_plans.count }}</h4>
+                                    <p>Diet Plans</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

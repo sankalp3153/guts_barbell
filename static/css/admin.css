@@ -1,0 +1,177 @@
+/* Blood and Guts Admin Theme */
+
+:root {
+    --primary: #dc3545;
+    --secondary: #6c757d;
+    --accent: #dc3545;
+    --primary-fg: #fff;
+    --body-bg: #121212;
+    --body-fg: #f8f9fa;
+    --body-quiet-color: #adb5bd;
+    --body-loud-color: #fff;
+    --header-bg: #000000;
+    --header-fg: #dc3545;
+    --link-fg: #dc3545;
+    --link-hover-color: #c82333;
+    --link-selected-fg: #c82333;
+    --hairline-color: #2c2c2c;
+    --border-color: #2c2c2c;
+    --error-fg: #e35d6a;
+    --message-success-bg: #28a745;
+    --message-warning-bg: #ffc107;
+    --message-error-bg: #dc3545;
+    --darkened-bg: #212529;
+    --selected-bg: #2c2c2c;
+    --selected-row: #212529;
+}
+
+/* Header */
+#header {
+    background: var(--header-bg);
+    color: var(--header-fg);
+    border-bottom: 2px solid var(--accent);
+}
+
+#header a:link, #header a:visited {
+    color: var(--header-fg);
+}
+
+#header a:hover {
+    color: var(--primary-fg);
+}
+
+#branding h1 {
+    font-weight: bold;
+}
+
+#branding h1 a:link, #branding h1 a:visited {
+    color: var(--header-fg);
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: var(--darkened-bg);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--body-quiet-color);
+}
+
+div.breadcrumbs a {
+    color: var(--link-fg);
+}
+
+div.breadcrumbs a:hover {
+    color: var(--link-hover-color);
+}
+
+/* Buttons */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--accent);
+    color: var(--primary-fg);
+    border: none;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+    background: var(--link-hover-color);
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--accent);
+}
+
+.button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover {
+    background: var(--link-hover-color);
+}
+
+/* Module */
+.module h2, .module caption, .inline-group h2 {
+    background: var(--darkened-bg);
+    color: var(--accent);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Dashboard */
+.dashboard .module table th {
+    background: var(--darkened-bg);
+    color: var(--body-fg);
+}
+
+.dashboard .module table td a {
+    color: var(--link-fg);
+}
+
+.dashboard .module table td a:hover {
+    color: var(--link-hover-color);
+}
+
+/* Forms */
+.form-row {
+    border-bottom: 1px solid var(--border-color);
+}
+
+fieldset {
+    border: 1px solid var(--border-color);
+}
+
+fieldset.collapsed h2 {
+    background: var(--darkened-bg);
+    color: var(--accent);
+}
+
+/* Tables */
+thead th {
+    background: var(--darkened-bg);
+    color: var(--body-fg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+tr:nth-child(odd), .row-form-errors {
+    background: var(--body-bg);
+}
+
+tr:nth-child(even), tr:nth-child(even) .errorlist, tr:nth-child(odd) + .row-form-errors, tr:nth-child(odd) + .row-form-errors .errorlist {
+    background: var(--darkened-bg);
+}
+
+/* Messages */
+ul.messagelist li {
+    background: var(--darkened-bg);
+    border: 1px solid var(--border-color);
+}
+
+ul.messagelist li.success {
+    background: var(--message-success-bg);
+    border: 1px solid var(--message-success-bg);
+}
+
+ul.messagelist li.warning {
+    background: var(--message-warning-bg);
+    border: 1px solid var(--message-warning-bg);
+}
+
+ul.messagelist li.error {
+    background: var(--message-error-bg);
+    border: 1px solid var(--message-error-bg);
+}
+
+/* Login */
+.login {
+    background: var(--body-bg);
+}
+
+.login #header {
+    background: var(--header-bg);
+    color: var(--header-fg);
+}
+
+.login #content {
+    background: var(--darkened-bg);
+}
+
+.login .form-row label {
+    color: var(--body-fg);
+}
+
+.login .submit-row {
+    background: transparent;
+    border: none;
+}

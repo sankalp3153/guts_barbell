@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - Blood and Guts{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto text-center">
+            <h1 class="display-4 text-danger mb-4">About Blood & Guts</h1>
+            <p class="lead">Forge your body with the strength and determination of a Berserk warrior.</p>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="bg-black p-4 rounded mb-4 mb-md-0">
+                <h2 class="text-danger mb-4">Our Mission</h2>
+                <p>Blood & Guts is dedicated to helping you build a physique worthy of a Berserk warrior. Inspired by the legendary manga, our platform provides the knowledge, tools, and motivation you need to transform your body and mind.</p>
+                <p>We believe in the power of determination, consistency, and pushing beyond your limits. Just as Guts never surrenders in the face of overwhelming odds, we encourage you to face your fitness challenges head-on and emerge stronger.</p>
+                <p>Our team of fitness experts has created comprehensive workout programs, nutrition plans, and informative content to guide you on your journey to becoming the strongest version of yourself.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="bg-black p-4 rounded">
+                <h2 class="text-danger mb-4">What We Offer</h2>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <i class="fas fa-book text-danger fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Informative Blogs</h5>
+                                <p>In-depth articles on training, nutrition, recovery, and mindset to expand your fitness knowledge.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mb-3">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <i class="fas fa-dumbbell text-danger fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Workout Programs</h5>
+                                <p>Brutal, effective workout routines designed to build strength, power, and endurance.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <i class="fas fa-utensils text-danger fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Diet Plans</h5>
+                                <p>Nutrition plans tailored to different goals, with detailed meal suggestions and recipes.</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="bg-black p-4 rounded">
+                <h2 class="text-danger mb-4 text-center">Our Philosophy</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="text-center">
+                            <i class="fas fa-fist-raised text-danger fa-3x mb-3"></i>
+                            <h4>Struggle</h4>
+                            <p>Embrace the struggle of training. Growth comes from pushing through discomfort and challenging your limits.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="text-center">
+                            <i class="fas fa-fire text-danger fa-3x mb-3"></i>
+                            <h4>Determination</h4>
+                            <p>Cultivate unwavering determination. Your mind must be as strong as your body to achieve greatness.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-shield-alt text-danger fa-3x mb-3"></i>
+                            <h4>Resilience</h4>
+                            <p>Build resilience through consistent training. Like tempering steel, your body becomes stronger through repeated stress.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto text-center">
+            <h2 class="text-danger mb-4">Join Our Community</h2>
+            <p class="mb-4">Ready to begin your transformation? Join Blood & Guts today and start your journey to becoming stronger.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'users:register' %}" class="btn btn-danger btn-lg">Sign Up Now</a>
+                <a href="{% url 'core:contact' %}" class="btn btn-outline-light btn-lg">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Diet Plans - Blood and Guts{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h1 class="display-4 text-danger mb-4">Diet Plans</h1>
+            <p class="lead">Fuel your body with our nutrition plans designed to support your fitness goals.</p>
+        </div>
+        <div class="col-md-4">
+            <form method="GET" action="{% url 'diets:diet_list' %}" class="d-flex">
+                <input type="text" name="q" class="form-control bg-dark text-light me-2" placeholder="Search diet plans..." value="{{ request.GET.q }}">
+                <button type="submit" class="btn btn-danger">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <!-- Filters -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-body">
+                    <form method="GET" action="{% url 'diets:diet_list' %}">
+                        <div class="row">
+                            <div class="col-md-5 mb-3 mb-md-0">
+                                <label for="goal" class="form-label">Goal</label>
+                                <select name="goal" id="goal" class="form-select bg-dark text-light">
+                                    <option value="">All Goals</option>
+                                    {% for key, value in goals.items %}
+                                        <option value="{{ key }}" {% if request.GET.goal == key %}selected{% endif %}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-5 mb-3 mb-md-0">
+                                <label for="duration" class="form-label">Duration</label>
+                                <select name="duration" id="duration" class="form-select bg-dark text-light">
+                                    <option value="">All Durations</option>
+                                    {% for key, value in durations.items %}
+                                        <option value="{{ key }}" {% if request.GET.duration == key %}selected{% endif %}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-danger w-100">Filter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for diet in diets %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-dark h-100">
+                            {% if diet.featured_image %}
+                                <img src="{{ diet.featured_image.url }}" class="card-img-top" alt="{{ diet.title }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-secondary text-white text-center py-5">
+                                    <i class="fas fa-utensils fa-3x"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ diet.title }}</h5>
+                                <p class="card-text text-muted">{{ diet.description|truncatewords:20 }}</p>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="badge bg-danger">{{ diet.get_goal_display }}</span>
+                                    <span class="badge bg-secondary">{{ diet.duration_weeks }} Weeks</span>
+                                </div>
+                                {% if diet.calories_per_day %}
+                                    <div class="small text-muted mb-2">
+                                        <i class="fas fa-fire me-1"></i> {{ diet.calories_per_day }} calories per day
+                                    </div>
+                                {% endif %}
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="small text-muted">
+                                        <i class="fas fa-user me-1"></i> {{ diet.author.username }}
+                                    </div>
+                                    <div class="small text-muted">
+                                        <i class="fas fa-calendar me-1"></i> {{ diet.created_at|date:"M d, Y" }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-dark border-0">
+                                <a href="{{ diet.get_absolute_url }}" class="btn btn-sm btn-outline-danger">View Plan</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h3>No diet plans found</h3>
+                        <p class="text-muted">Try adjusting your search or check back later for new plans.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.goal %}&goal={{ request.GET.goal }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.goal %}&goal={{ request.GET.goal }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link bg-danger border-danger">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link bg-dark text-light border-secondary" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.goal %}&goal={{ request.GET.goal }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.goal %}&goal={{ request.GET.goal }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.goal %}&goal={{ request.GET.goal }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Goals</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        {% for key, value in goals.items %}
+                            <li class="list-group-item bg-dark border-secondary">
+                                <a href="{% url 'diets:diet_list' %}?goal={{ key }}" class="text-light text-decoration-none">
+                                    {{ value }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Plan Duration</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        {% for key, value in durations.items %}
+                            <li class="list-group-item bg-dark border-secondary">
+                                <a href="{% url 'diets:diet_list' %}?duration={{ key }}" class="text-light text-decoration-none">
+                                    {{ value }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card bg-dark border-danger">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Need Help?</h5>
+                </div>
+                <div class="card-body">
+                    <p>Not sure which diet plan is right for you?</p>
+                    <a href="{% url 'core:contact' %}" class="btn btn-outline-danger w-100">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

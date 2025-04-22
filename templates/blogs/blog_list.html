@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blogs - Blood and Guts{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h1 class="display-4 text-danger mb-4">Fitness Articles</h1>
+            <p class="lead">Discover the latest fitness knowledge, tips, and strategies to maximize your gains.</p>
+        </div>
+        <div class="col-md-4">
+            <form method="GET" action="{% url 'blogs:blog_list' %}" class="d-flex">
+                <input type="text" name="q" class="form-control bg-dark text-light me-2" placeholder="Search articles..." value="{{ request.GET.q }}">
+                <button type="submit" class="btn btn-danger">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                {% for blog in blogs %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-dark h-100">
+                            {% if blog.featured_image %}
+                                <img src="{{ blog.featured_image.url }}" class="card-img-top" alt="{{ blog.title }}">
+                            {% else %}
+                                <div class="bg-secondary text-white text-center py-5">
+                                    <i class="fas fa-image fa-3x"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ blog.title }}</h5>
+                                <p class="card-text text-muted">{{ blog.excerpt|truncatewords:20 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="small text-muted">
+                                        <i class="fas fa-user me-1"></i> {{ blog.author.username }}
+                                    </div>
+                                    <div class="small text-muted">
+                                        <i class="fas fa-calendar me-1"></i> {{ blog.created_at|date:"M d, Y" }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-dark border-0">
+                                <a href="{{ blog.get_absolute_url }}" class="btn btn-sm btn-outline-danger">Read More</a>
+                                {% if blog.categories.all %}
+                                    <div class="mt-2">
+                                        {% for category in blog.categories.all %}
+                                            <a href="{% url 'blogs:category_blogs' category.slug %}" class="badge bg-secondary text-decoration-none me-1">{{ category.name }}</a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h3>No articles found</h3>
+                        <p class="text-muted">Try adjusting your search or check back later for new content.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link bg-danger border-danger">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link bg-dark text-light border-secondary" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-dark text-light border-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header bg-black text-danger">
+                    <h5 class="mb-0">Categories</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush bg-dark">
+                        {% for category in categories %}
+                            <li class="list-group-item bg-dark border-secondary">
+                                <a href="{% url 'blogs:category_blogs' category.slug %}" class="text-light text-decoration-none d-flex justify-content-between align-items-center">
+                                    {{ category.name }}
+                                    <span class="badge bg-danger rounded-pill">{{ category.blog_posts.count }}</span>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item bg-dark border-secondary text-muted">No categories available</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
